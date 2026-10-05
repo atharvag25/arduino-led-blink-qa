@@ -1,11 +1,22 @@
-   // blink.ino - v1
-   void setup() {
-     pinMode(13, OUTPUT);
-   }
+// blink.ino - v2
+const int LED_PIN = 13;              // Onboard LED (use 220-330 ohm resistor if external)
+const unsigned long INTERVAL = 1000; // Blink interval in ms
 
-   void loop() {
-     digitalWrite(13, HIGH);
-     delay(1000);
-     digitalWrite(13, LOW);
-     delay(1000);
-   }
+unsigned long previousMillis = 0;
+bool ledState = LOW;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("LED blink started");
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= INTERVAL) {
+    previousMillis = currentMillis;
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+    Serial.println(ledState ? "LED ON" : "LED OFF");
+  }
+}
